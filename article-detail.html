@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章详情 - 星火硬件</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background-color: #000;
+            background-image: url('image/Background image.png');
+            background-size: 100% auto;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            color: #ffffff;
+            line-height: 1.8;
+        }
+
+        /* 顶部Header区域 */
+        .header-section {
+            position: relative;
+            width: 100%;
+            min-height: 100px;
+            padding: 40px 20px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-header {
+            margin-bottom: 0;
+            z-index: 1;
+        }
+
+        .logo-header a {
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .logo-header img {
+            height: 32px;
+            width: auto;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 20px 40px;
+        }
+
+        /* 文章头部 */
+        .article-header {
+            margin-bottom: 40px;
+        }
+
+        .article-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .article-intro {
+            font-size: 18px;
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        /* 文章图片展示模块 */
+        .article-images-gallery {
+            margin-bottom: 40px;
+            margin-left: -20px;
+            margin-right: -20px;
+            width: calc(100% + 40px);
+        }
+
+        .images-gallery-list {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0 20px 10px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        .images-gallery-list::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .gallery-image-item {
+            flex-shrink: 0;
+            width: 292px;
+            height: 200px;
+            border-radius: 18px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 文章内容 */
+        .article-content {
+            margin-bottom: 60px;
+        }
+
+        .article-content img {
+            width: 100%;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .article-content h1 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            margin: 40px 0 20px;
+        }
+
+        .article-content h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin: 30px 0 15px;
+        }
+
+        .article-content p {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .article-content p .highlight {
+            color: #ff6b35;
+        }
+
+        .article-content ul {
+            margin: 20px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .article-content li {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .article-content li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #ff6b35;
+            font-size: 40px;
+            line-height: 1;
+            transform: translateY(-8px);
+        }
+
+       /* ===== 参考文章整体 ===== */
+.reference-section {
+
+    margin-left: -20px;
+    margin-right: -20px;
+    width: calc(100% + 40px);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 0 0px;
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.section-title .count {
+    margin-left: 8px;
+    font-size: 28px;
+    color: #777;
+}
+
+.view-more {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #ddd;
+    border: 1px solid #333;
+    border-radius: 999px;
+    text-decoration: none;
+}
+
+.view-more:hover {
+    border-color: #555;
+}
+
+/* ===== 列表：两列卡片，支持横向滚动 ===== */
+.reference-list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 20px 40px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.reference-list::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* ===== 单条卡片（按截图） ===== */
+.reference-item{
+  position: relative;
+  flex: 0 0 calc(75% - 8px);
+  min-width: calc(75% - 8px);
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+
+  padding:18px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.02);
+
+  transition: border-color .2s ease, background-color .2s ease;
+}
+
+.reference-item:hover{
+  border-color: rgba(255,255,255,.28);
+  background: rgba(255,255,255,.03);
+}
+
+/* 左侧 icon：更大圆形 */
+.reference-icon{
+  width:56px;
+  height:56px;
+  flex: 0 0 56px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.reference-icon img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+/* 右侧内容：两行结构 */
+.reference-content{
+  flex:1;
+  min-width:0;               /* 关键：保证标题两行省略生效 */
+  display:flex;
+  flex-direction:column;
+}
+
+/* 第一行：来源 */
+.reference-source{
+  font-size:16px;
+  font-weight:700;
+  color: rgba(255,255,255,.35);
+}
+
+/* 时间：放在卡片右上角 */
+.reference-time{
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size:16px;
+  color: rgba(255,255,255,.35);
+  white-space:nowrap;
+}
+
+/* 第二行：大标题，两行截断 */
+.reference-title{
+  margin-top:8px;
+
+  font-size:18px;
+  font-weight:300;
+  line-height:1.15;
+  color:#fff;
+
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+        /* 相关文章区块 */
+        .related-section {
+            margin-bottom: 60px;
+            margin-left: -20px;
+            margin-right: -20px;
+            width: calc(100% + 40px);
+        }
+
+        .related-list {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 5px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0 20px 10px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        .related-list::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .related-item {
+            position: relative;
+            min-width: 280px;
+            border-radius: 18px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .related-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .related-item-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px;
+        }
+
+        .related-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .related-item-gradient {
+            /* 默认兜底色（JS 还没跑或取色失败时） */
+            --overlay-color: #143C8E;
+            
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            pointer-events: none;
+            
+            /* 渐变从底部90%透明度到顶部0%透明度 */
+            background: linear-gradient(
+                0deg,
+                color-mix(in srgb, var(--overlay-color) 90%, rgba(0,0,0,0)) 0%,
+                color-mix(in srgb, var(--overlay-color) 0%, rgba(0,0,0,0)) 100%
+            );
+        }
+
+        /* 如果你的浏览器不支持 color-mix（极少数情况），用这个兜底： */
+        @supports not (background: color-mix(in srgb, #000 50%, transparent)) {
+            .related-item-gradient {
+                background: linear-gradient(
+                    0deg,
+                    rgba(0,0,0,0.9) 0%,
+                    rgba(0,0,0,0) 100%
+                );
+            }
+        }
+
+        .related-item-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            z-index: 2;
+        }
+
+        .related-item-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3px;
+        }
+
+        .related-item-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            line-height: 1.4;
+        }
+
+        /* 底部Footer */
+        .footer {
+            padding: 30px 20px 30px;
+            text-align: center;
+            background-color: #262626;
+        }
+
+        .footer-logo {
+            margin-bottom: 1px;
+        }
+
+        .footer-logo img {
+            height: 28px;
+            width: auto;
+        }
+
+        .footer-tagline {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: #666;
+        }
+
+        .social-icon img {
+            width: 100%;
+            height: 100%;
+            opacity: 0.6;
+        }
+
+        /* 响应式设计 */
+        @media (min-width: 640px) {
+            .header-section {
+                padding: 50px 30px 20px;
+                min-height: 120px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .header-section {
+                padding: 60px 40px 20px;
+                min-height: 120px;
+            }
+
+            .main-content {
+                padding: 20px 40px 40px;
+            }
+
+            .article-images-gallery {
+                margin-left: -40px;
+                margin-right: -40px;
+                width: calc(100% + 80px);
+            }
+
+            .images-gallery-list {
+                padding: 0 40px 10px;
+            }
+
+            .reference-section {
+                margin-left: -40px;
+                margin-right: -40px;
+                width: calc(100% + 80px);
+            }
+
+            .reference-list {
+                padding: 0 40px 10px;
+            }
+
+            .related-section {
+                margin-left: -40px;
+                margin-right: -40px;
+                width: calc(100% + 80px);
+            }
+
+            .related-list {
+                padding: 0 40px 10px;
+            }
+
+            .section-header {
+                padding: 0 40px;
+            }
+
+            .article-title {
+                font-size: 36px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .header-section {
+                padding: 80px 60px 20px;
+                min-height: 120px;
+            }
+
+            .main-content {
+                padding: 20px 60px 40px;
+            }
+
+            .article-images-gallery {
+                margin-left: -60px;
+                margin-right: -60px;
+                width: calc(100% + 120px);
+            }
+
+            .images-gallery-list {
+                padding: 0 60px 10px;
+            }
+
+            .reference-section {
+                margin-left: -60px;
+                margin-right: -60px;
+                width: calc(100% + 120px);
+            }
+
+            .reference-list {
+                padding: 0 60px 10px;
+            }
+
+            .related-section {
+                margin-left: -60px;
+                margin-right: -60px;
+                width: calc(100% + 120px);
+            }
+
+            .related-list {
+                padding: 0 60px 10px;
+            }
+
+            .section-header {
+                padding: 0 60px;
+            }
+
+            .article-title {
+                font-size: 40px;
+            }
+        }
+    </style>
+    <script>
+        // 文章数据
+        const articles = {
+            1: {
+                title: "戴了一周之后,这枚 AI 戒指真正改变的,其实不是健康数据",
+                referenceCount: "751",
+                time: "3分钟前",
+                intro: "在连续七天佩戴与记录后，我们逐渐发现，这类 AI 可穿戴设备的价值，并不完全体现在参数或算法上。",
+                image: "image/戒指.webp"
+            },
+            2: {
+                title: "为什么现在的 AI 硬件, 都开始\"不强调 AI\"了?",
+                referenceCount: "523",
+                time: "1小时前",
+                intro: "AI硬件的未来趋势正在悄然改变，从强调AI功能转向更注重用户体验和实际应用场景。",
+                image: "image/吊坠.jpg"
+            },
+            3: {
+                title: "智能穿戴设备的未来发展趋势",
+                referenceCount: "312",
+                time: "2小时前",
+                intro: "随着技术的不断进步，智能穿戴设备正在从简单的数据追踪工具转变为真正的智能助手。",
+                image: "image/眼镜.webp"
+            },
+            4: {
+                title: "AI戒指的隐私保护：数据安全如何保障？",
+                referenceCount: "689",
+                time: "5小时前",
+                intro: "随着AI可穿戴设备的普及，用户隐私和数据安全成为关注的焦点，各大厂商如何应对这一挑战？",
+                image: "image/戒指.webp"
+            },
+            5: {
+                title: "智能吊坠：健康监测的新形态",
+                referenceCount: "456",
+                time: "8小时前",
+                intro: "智能吊坠作为新兴的健康监测设备，正在重新定义可穿戴设备的形态和功能边界。",
+                image: "image/吊坠.jpg"
+            },
+            6: {
+                title: "AR眼镜的AI革命：从概念到现实",
+                referenceCount: "534",
+                time: "12小时前",
+                intro: "AR智能眼镜结合AI技术，正在改变我们与数字世界的交互方式，带来全新的体验。",
+                image: "image/眼镜.webp"
+            },
+            7: {
+                title: "AI戒指的续航挑战：如何平衡功能与电池寿命？",
+                referenceCount: "623",
+                time: "1天前",
+                intro: "在有限的空间内实现强大的AI功能，同时保证足够的续航时间，是AI戒指面临的最大技术挑战。",
+                image: "image/戒指.webp"
+            },
+            8: {
+                title: "可穿戴AI设备的材料创新",
+                referenceCount: "412",
+                time: "2天前",
+                intro: "从传统塑料到新型复合材料，可穿戴AI设备正在探索更多可能性，提升舒适度和耐用性。",
+                image: "image/吊坠.jpg"
+            },
+            9: {
+                title: "智能眼镜的显示技术突破",
+                referenceCount: "578",
+                time: "3天前",
+                intro: "MicroLED、光波导等新技术的应用，让智能眼镜的显示效果和用户体验达到了新的高度。",
+                image: "image/眼镜.webp"
+            }
+        };
+
+        // 获取URL参数
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // 页面加载时更新内容
+        window.addEventListener('DOMContentLoaded', function() {
+            const articleId = getUrlParameter('id') || '1';
+            const article = articles[articleId] || articles[1];
+
+            // 更新文章标题
+            const titleElement = document.querySelector('.article-title');
+            if (titleElement) {
+                titleElement.textContent = article.title;
+            }
+
+            // 更新元数据
+            const metaElements = document.querySelectorAll('.article-meta span');
+            if (metaElements.length >= 2) {
+                metaElements[0].textContent = article.referenceCount + ' 参考文章';
+                metaElements[1].textContent = article.time;
+            }
+
+            // 更新介绍
+            const introElement = document.querySelector('.article-intro');
+            if (introElement) {
+                introElement.textContent = article.intro;
+            }
+
+            // 更新参考文章数量
+            const referenceCountElement = document.querySelector('.reference-section .section-title .count');
+            if (referenceCountElement) {
+                referenceCountElement.textContent = article.referenceCount;
+            }
+
+            // 更新文章图片
+            const articleImages = document.querySelectorAll('.article-content img');
+            if (articleImages.length > 0) {
+                articleImages.forEach(img => {
+                    img.src = article.image;
+                });
+            }
+
+            // 更新图片展示模块
+            const galleryImages = document.querySelectorAll('.gallery-image-item img');
+            if (galleryImages.length > 0) {
+                galleryImages.forEach(img => {
+                    img.src = article.image;
+                });
+            }
+        });
+
+        /**
+         * 逻辑：
+         * 随机从 4 个候选色中选择一个，写入对应 overlay 的 CSS 变量 --overlay-color
+         *
+         * 适用范围：
+         * - 详情页"相关文章"卡片：.related-item-image-wrapper 包含 img + .related-item-gradient
+         */
+
+        // 4 个候选色
+        const PALETTE = ["#8E143C", "#143C8E", "#216D32", "#D54F2D"];
+
+        // 随机选择一个颜色
+        function getRandomColor(){
+            return PALETTE[Math.floor(Math.random() * PALETTE.length)];
+        }
+
+        // 给某个 related-item-image-wrapper 容器应用 overlay 色
+        function applyRelatedOverlayColor(container){
+            const gradient = container.querySelector(".related-item-gradient");
+            if (!gradient) return;
+
+            const picked = getRandomColor();
+            gradient.style.setProperty("--overlay-color", picked);
+        }
+
+        // 扫描全页面：详情页相关文章卡片
+        function initRelatedItemOverlays(){
+            document.querySelectorAll(".related-item-image-wrapper").forEach(applyRelatedOverlayColor);
+        }
+
+        // DOM ready
+        if (document.readyState === "loading"){
+            document.addEventListener("DOMContentLoaded", initRelatedItemOverlays);
+        } else {
+            initRelatedItemOverlays();
+        }
+    </script>
+</head>
+<body>
+    <!-- 顶部Header区域 -->
+    <div class="header-section">
+        <div class="logo-header">
+            <a href="homepage.html">
+                <img src="image/logo head.svg" alt="spark gear, 星火硬件">
+            </a>
+        </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <!-- 文章头部 -->
+        <div class="article-header">
+            <h1 class="article-title">戴了一周之后,这枚 AI 戒指真正改变的,其实不是健康数据</h1>
+            <div class="article-meta">
+                <span>751 参考文章</span>
+                <span>3分钟前</span>
+            </div>
+            <div class="article-intro">
+                在连续七天佩戴与记录后，我们逐渐发现，这类 AI 可穿戴设备的价值，并不完全体现在参数或算法上。
+            </div>
+        </div>
+
+        <!-- 文章图片展示模块 -->
+        <div class="article-images-gallery">
+            <div class="images-gallery-list">
+                <div class="gallery-image-item">
+                    <img src="image/戒指.webp" alt="AI戒指">
+                </div>
+                <div class="gallery-image-item">
+                    <img src="image/戒指.webp" alt="AI戒指佩戴">
+                </div>
+            </div>
+        </div>
+
+        <!-- 文章内容 -->
+        <div class="article-content">
+            <img src="image/戒指.webp" alt="AI戒指">
+            
+            <p>正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容。</p>
+            
+            <h1>一级标题</h1>
+            <p>正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容。</p>
+            
+            <img src="image/戒指.webp" alt="AI戒指佩戴">
+            
+            <h2>二级标题</h2>
+            <p>正文内容正文内容<span class="highlight">强调内容</span>正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容。</p>
+            
+            <ul>
+                <li>项目1</li>
+                <li>项目2</li>
+                <li>项目3</li>
+            </ul>
+        </div>
+
+        <!-- 参考文章 -->
+        <div class="section-header">
+            <div class="section-title">参考文章 <span class="count">751</span></div>
+            <a href="#" class="view-more">查看更多</a>
+        </div>
+        <div class="reference-section">
+            <div class="reference-list">
+                <div class="reference-item">
+                    <div class="reference-time">3分钟前</div>
+                    <div class="reference-icon">
+                        <img src="image/References icon/xiaohongshu.webp" alt="小红书">
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-source">小红书</div>
+                        <div class="reference-title">AI总结的摘要AI总结的摘要AI总结的摘要AI总结的摘要</div>
+                    </div>
+                </div>
+                <div class="reference-item">
+                    <div class="reference-time">5分钟前</div>
+                    <div class="reference-icon">
+                        <img src="image/References icon/weixingzh.webp" alt="微信公众号">
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-source">微信公众号</div>
+                        <div class="reference-title">AI总结的摘要AI总结的摘要AI总结的摘要AI总结的摘要</div>
+                    </div>
+                </div>
+                <div class="reference-item">
+                    <div class="reference-time">10分钟前</div>
+                    <div class="reference-icon">
+                        <img src="image/References icon/xiaohongshu.webp" alt="小红书">
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-source">小红书</div>
+                        <div class="reference-title">AI总结的摘要AI总结的摘要AI总结的摘要AI总结的摘要</div>
+                    </div>
+                </div>
+                <div class="reference-item">
+                    <div class="reference-time">15分钟前</div>
+                    <div class="reference-icon">
+                        <img src="image/References icon/weixingzh.webp" alt="微信公众号">
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-source">微信公众号</div>
+                        <div class="reference-title">AI总结的摘要AI总结的摘要AI总结的摘要AI总结的摘要</div>
+                    </div>
+                </div>
+                <div class="reference-item">
+                    <div class="reference-time">20分钟前</div>
+                    <div class="reference-icon">
+                        <img src="image/References icon/xiaohongshu.webp" alt="小红书">
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-source">小红书</div>
+                        <div class="reference-title">AI总结的摘要AI总结的摘要AI总结的摘要AI总结的摘要</div>
+                    </div>
+                </div>
+                <div class="reference-item">
+                    <div class="reference-time">25分钟前</div>
+                    <div class="reference-icon">
+                        <img src="image/References icon/weixingzh.webp" alt="微信公众号">
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-source">微信公众号</div>
+                        <div class="reference-title">AI总结的摘要AI总结的摘要AI总结的摘要AI总结的摘要</div>
+                    </div>
+                </div>
+                <div class="reference-item">
+                    <div class="reference-time">30分钟前</div>
+                    <div class="reference-icon">
+                        <img src="image/References icon/xiaohongshu.webp" alt="小红书">
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-source">小红书</div>
+                        <div class="reference-title">AI总结的摘要AI总结的摘要AI总结的摘要AI总结的摘要</div>
+                    </div>
+                </div>
+                <div class="reference-item">
+                    <div class="reference-time">35分钟前</div>
+                    <div class="reference-icon">
+                        <img src="image/References icon/weixingzh.webp" alt="微信公众号">
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-source">微信公众号</div>
+                        <div class="reference-title">AI总结的摘要AI总结的摘要AI总结的摘要AI总结的摘要</div>
+                    </div>
+                </div>
+                <div class="reference-item">
+                    <div class="reference-time">40分钟前</div>
+                    <div class="reference-icon">
+                        <img src="image/References icon/xiaohongshu.webp" alt="小红书">
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-source">小红书</div>
+                        <div class="reference-title">AI总结的摘要AI总结的摘要AI总结的摘要AI总结的摘要</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 相关文章 -->
+        <div class="section-title">相关文章 <span class="count">51</span></div>
+        <div class="related-section">
+            <div class="section-header">
+                
+            </div>
+            <div class="related-list">
+                <div class="related-item">
+                    <div class="related-item-image-wrapper">
+                        <img src="image/吊坠.jpg" alt="相关文章1">
+                        <div class="related-item-gradient"></div>
+                        <div class="related-item-content">
+                            <div class="related-item-meta">
+                                <span>751 参考文章</span>
+                                <span>5分钟前</span>
+                            </div>
+                            <div class="related-item-title">为什么现在的 AI 硬件, 都开始"不强调 AI"了?</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="related-item">
+                    <div class="related-item-image-wrapper">
+                        <img src="image/眼镜.webp" alt="相关文章2">
+                        <div class="related-item-gradient"></div>
+                        <div class="related-item-content">
+                            <div class="related-item-meta">
+                                <span>523 参考文章</span>
+                                <span>1小时前</span>
+                            </div>
+                            <div class="related-item-title">智能穿戴设备的未来发展趋势</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="related-item">
+                    <div class="related-item-image-wrapper">
+                        <img src="image/戒指.webp" alt="相关文章3">
+                        <div class="related-item-gradient"></div>
+                        <div class="related-item-content">
+                            <div class="related-item-meta">
+                                <span>312 参考文章</span>
+                                <span>2小时前</span>
+                            </div>
+                            <div class="related-item-title">AI硬件设计的新思路</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部Footer -->
+    <div class="footer">
+        <div class="footer-logo">
+            <img src="image/logo footer.svg" alt="spark gear">
+        </div>
+        <div class="footer-tagline">星火硬件为您提供专业新鲜的AI硬件报道</div>
+        <div class="social-icons">
+            <div class="social-item">
+                <div class="social-icon">
+                    <img src="image/xiaohongshu.svg" alt="小红书">
+                </div>
+            </div>
+            <div class="social-item">
+                <div class="social-icon">
+                    <img src="image/weixin.svg" alt="微信">
+                </div>
+            </div>
+            <div class="social-item">
+                <div class="social-icon">
+                    <img src="image/weibo.svg" alt="微博">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

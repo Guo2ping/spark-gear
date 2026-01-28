@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 临时文件
+*.zip
+*.log
+
+# 设计文件（可选，如果不想上传可以取消注释）
+# *.ai
+# *.psd
