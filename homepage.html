@@ -290,11 +290,11 @@
         @media (min-width: 640px) {
             .header-section {
                 padding: 50px 30px 0;
-                min-height: 350px;
+                min-height: 0px;
             }
 
             .logo-header {
-                padding: 0 30px;
+                padding: 0 0px;
             }
 
             .primary-nav {
@@ -336,11 +336,11 @@
 
             .header-section {
                 padding: 60px 40px 0;
-                min-height: 400px;
+              
             }
 
             .logo-header {
-                padding: 0 40px;
+                padding: 0 0px;
             }
 
             .primary-nav {
@@ -365,7 +365,7 @@
 
             .articles-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 5px;
+                gap: 12px;
             }
 
             .article-image-wrapper {
@@ -373,7 +373,7 @@
             }
         }
 
-        @media (min-width: 1024px) {
+        @media (min-width: 768px) and (max-width: 1024px) {
             .main-content {
                 padding: 0 60px;
                 padding-top: 20px;
@@ -381,11 +381,11 @@
 
             .header-section {
                 padding: 80px 60px 0;
-                min-height: 450px;
+             
             }
 
             .logo-header {
-                padding: 0 60px;
+                padding: 0 0px;
             }
 
             .primary-nav {
@@ -410,7 +410,7 @@
 
             .articles-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 5px;
+                gap: 12px;
             }
 
             .article-image-wrapper {
@@ -422,15 +422,49 @@
             }
         }
 
-        @media (min-width: 1280px) {
+        @media (min-width: 1280px)  {
+            .header-section {
+                padding: 80px 60px 0;
+             
+            }
+
+            .logo-header {
+                padding: 0 0px;
+            }
+
+            .primary-nav {
+                margin-left: -60px;
+                margin-right: -60px;
+                width: calc(100% + 120px);
+                padding: 0 60px;
+                gap: 36px;
+            }
+
+            .secondary-nav {
+                margin-left: -60px;
+                margin-right: -60px;
+                width: calc(100% + 120px);
+                padding-left: 60px;
+                padding-right: 60px;
+            }
+
+            .primary-nav-item {
+                font-size: 32px;
+            }
+
             .articles-grid {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 5px;
+                gap: 12px;
             }
 
             .article-image-wrapper {
-                height: 390px;
+                height: 440px;
             }
+
+            .article-title-overlay {
+                font-size: 28px;
+            }
+            
         }
     </style>
     <script>
